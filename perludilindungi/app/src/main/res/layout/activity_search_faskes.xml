@@ -101,5 +101,23 @@
         style="@style/spinner_style"
         />
 
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Search"
+        app:layout_constraintTop_toBottomOf="@+id/city_spinner"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#C9C7D2"
+        app:layout_constraintTop_toBottomOf="@+id/searchButton"
+        android:layout_marginTop="20dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

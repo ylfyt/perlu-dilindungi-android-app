@@ -41,13 +41,13 @@ class SearchFaskes : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 if (response.isSuccessful){
                     val provinces = response.body()
                     Log.i("success", "Yeeeay");
-                    if (provinces != null) {
-                        if (provinces.provinsi != null){
-                            for (prov in provinces.provinsi!!){
-                                Log.i("Test", prov.nama!!);
-                            }
-                        }
-                    }
+//                    if (provinces != null) {
+//                        if (provinces.provinsi != null){
+//                            for (prov in provinces.provinsi!!){
+//                                Log.i("Test", prov.nama!!);
+//                            }
+//                        }
+//                    }
                 }
                 else{
                     Log.i("Something Wrong", response.raw().toString())
