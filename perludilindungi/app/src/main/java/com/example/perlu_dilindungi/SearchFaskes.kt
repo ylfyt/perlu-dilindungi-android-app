@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -29,19 +30,35 @@ class SearchFaskes : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         citySpinner.adapter = adapter
         citySpinner.onItemSelectedListener = this
+
+        val citySpinnerLoadingText: TextView = findViewById(R.id.citySpinnerLoadingText)
+        if (testArray.isEmpty()){
+            citySpinnerLoadingText.visibility = View.VISIBLE;
+        }
+        else{
+            citySpinnerLoadingText.visibility = View.GONE;
+        }
     }
 
     private fun setupProvinceSpinner() {
         val provinceSpinner: Spinner = findViewById(R.id.province_spinner)
 
         val testArray: Array<String> = arrayOf("Jawa Barat", "Sumatera Barat", "Jawa Timur")
-
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, testArray)
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
 
         provinceSpinner.adapter = adapter
         provinceSpinner.onItemSelectedListener = this
+
+
+        val provinceSpinnerLoadingText: TextView = findViewById(R.id.provinceSpinnerLoadingText)
+        if (testArray.isEmpty()){
+            provinceSpinnerLoadingText.visibility = View.VISIBLE;
+        }
+        else{
+            provinceSpinnerLoadingText.visibility = View.GONE;
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {

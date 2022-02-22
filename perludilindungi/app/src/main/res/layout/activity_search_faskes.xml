@@ -37,6 +37,16 @@
         app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/provinceSpinnerLoadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        app:layout_constraintTop_toTopOf="@+id/province_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/province_spinner"
+        app:layout_constraintStart_toStartOf="@id/province_spinner"
+        app:layout_constraintEnd_toEndOf="@id/province_spinner"
+        />
     <Spinner
         android:id="@+id/province_spinner"
         android:layout_width="match_parent"
@@ -65,6 +75,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/citySpinnerLoadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        app:layout_constraintTop_toTopOf="@+id/city_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/city_spinner"
+        app:layout_constraintStart_toStartOf="@id/city_spinner"
+        app:layout_constraintEnd_toEndOf="@id/city_spinner"
+        />
 
     <Spinner
         android:id="@+id/city_spinner"
