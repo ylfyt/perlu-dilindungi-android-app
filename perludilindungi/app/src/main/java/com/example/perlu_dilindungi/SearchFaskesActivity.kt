@@ -15,7 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class SearchFaskes : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_faskes)
@@ -61,6 +61,8 @@ class SearchFaskes : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 Log.i("error", t.message.toString())
             }
         })
+
+        supportFragmentManager.beginTransaction().replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
     }
 
     private fun setupCitySpinner() {
