@@ -1,5 +1,12 @@
 package com.example.perlu_dilindungi.models
 
+class FaskesResponseModel{
+    var success = false
+    var message: String? = null
+    var count_total = 0
+    var data : ArrayList<FaskesModel>? = null
+}
+
 class FaskesModel {
     var id = 0
     var kode : String? = null

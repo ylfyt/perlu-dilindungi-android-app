@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.perlu_dilindungi.CityModel
 import com.example.perlu_dilindungi.ProvinceModel
+import com.example.perlu_dilindungi.models.FaskesModel
 
 class FaskesViewModel : ViewModel() {
 
@@ -21,5 +22,13 @@ class FaskesViewModel : ViewModel() {
 
     val cities: MutableLiveData<ArrayList<CityModel>?> by lazy {
         MutableLiveData<ArrayList<CityModel>?>()
+    }
+
+    val faskesesFetching: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val faskeses : MutableLiveData<ArrayList<FaskesModel>?> by lazy {
+        MutableLiveData<ArrayList<FaskesModel>?>()
     }
 }

@@ -16,7 +16,7 @@ class CityController(faskesViewModel: FaskesViewModel) : Callback<ListOfCity?> {
         viewModel.citiesFetching.value = true
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(IRetrofit.BASE_URL)
+            .baseUrl(IRetrofit.BASE_URL_DAERAH)
             .build()
         val service: IRetrofit = retrofit.create(IRetrofit::class.java)
         service.getCities(provId)?.enqueue(this)
