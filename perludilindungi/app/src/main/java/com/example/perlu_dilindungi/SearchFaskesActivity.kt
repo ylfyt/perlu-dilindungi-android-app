@@ -11,6 +11,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.perlu_dilindungi.fragments.FaskesListFragment
+import com.example.perlu_dilindungi.models.FaskesModel
 import com.example.perlu_dilindungi.request_controllers.CityController
 import com.example.perlu_dilindungi.request_controllers.ProvincesController
 import com.example.perlu_dilindungi.view_models.FaskesViewModel
@@ -94,7 +95,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         setupCitySpinner()
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
+            .replace(R.id.faskesListFragmentReplace, FaskesListFragment(ArrayList<FaskesModel>())).commit()
     }
 
     private fun setupCitySpinner() {

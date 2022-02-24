@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.perlu_dilindungi.R
+import com.example.perlu_dilindungi.models.FaskesDetailModel
+import com.example.perlu_dilindungi.models.FaskesModel
 
-class FaskesListAdapter(private val context: Activity, private val arrayList: Array<String>)
-    : ArrayAdapter<String>(context, R.layout.faskes_item, arrayList) {
+class FaskesListAdapter(private val context: Activity, private val arrayList: ArrayList<FaskesModel>)
+    : ArrayAdapter<FaskesModel>(context, R.layout.faskes_item, arrayList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -18,7 +20,7 @@ class FaskesListAdapter(private val context: Activity, private val arrayList: Ar
 
         val faskesNameText: TextView = view.findViewById(R.id.faskesNameText)
 
-        faskesNameText.text = arrayList[position]
+        faskesNameText.text = "Test 1"
 
         return view
     }
