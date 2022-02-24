@@ -1,4 +1,4 @@
-package com.example.perlu_dilindungi
+package com.example.perlu_dilindungi.fragments
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import com.example.perlu_dilindungi.adapters.FaskesListAdapter
+import com.example.perlu_dilindungi.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +41,7 @@ class FaskesListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val faskesListAdapter = FaskesListAdapter(context as Activity, arrayOf("Faskes 1", "Faskes 2"))
+        val faskesListAdapter = FaskesListAdapter(context as Activity, arrayOf("Faskes 1", "Faskes 2", "Faskes 2", "Faskes 2"))
         val faskesListView : ListView = view.findViewById(R.id.faskesListView)
 
         faskesListView.adapter = faskesListAdapter

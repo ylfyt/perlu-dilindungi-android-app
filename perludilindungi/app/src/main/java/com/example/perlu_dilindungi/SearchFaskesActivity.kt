@@ -1,69 +1,97 @@
 package com.example.perlu_dilindungi
 
-import android.app.ActionBar
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.perlu_dilindungi.fragments.FaskesListFragment
+import com.example.perlu_dilindungi.request_controllers.CityController
+import com.example.perlu_dilindungi.request_controllers.ProvincesController
+import com.example.perlu_dilindungi.view_models.FaskesViewModel
 
 
 class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+
+    private lateinit var faskesViewModel: FaskesViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_faskes)
 
-        setOrientation()
 
-        setupProvinceSpinner()
-        setupCitySpinner()
+        faskesViewModel = ViewModelProvider(this).get(FaskesViewModel::class.java)
+        faskesViewModel.provinces.value = null
+        faskesViewModel.cities.value = null
 
-        val rf = Retrofit.Builder()
-            .baseUrl(IRetrofit.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create()).build()
-
-        val API: IRetrofit = rf.create(IRetrofit::class.java)
-        val call: Call<ListOfProvince?>? = API.provinces
-
-        val provinceSpinnerLoadingText: TextView = findViewById(R.id.provinceSpinnerLoadingText)
-        provinceSpinnerLoadingText.text = "Loading..."
-        call?.enqueue(object : Callback<ListOfProvince?> {
-            override fun onResponse(
-                call: Call<ListOfProvince?>,
-                response: Response<ListOfProvince?>
-            ) {
-                provinceSpinnerLoadingText.text = "Success"
-                if (response.isSuccessful) {
-                    val provinces = response.body()
-                    Log.i("success", "Yeeeay");
-//                    if (provinces != null) {
-//                        if (provinces.provinsi != null){
-//                            for (prov in provinces.provinsi!!){
-//                                Log.i("Test", prov.nama!!);
-//                            }
-//                        }
-//                    }
-                } else {
-                    Log.i("Something Wrong", response.raw().toString())
-                    provinceSpinnerLoadingText.text = "Fail"
-                }
-            }
-
-            override fun onFailure(call: Call<ListOfProvince?>, t: Throwable) {
-                provinceSpinnerLoadingText.text = "Fail"
-                t.printStackTrace()
-                Log.i("error", t.message.toString())
+        faskesViewModel.citiesFetching.observe(this, Observer {
+            val spinnerLoadingText : TextView = findViewById(R.id.citySpinnerLoadingText)
+            if (it) {
+                spinnerLoadingText.text = "Loading..."
+            } else {
+                spinnerLoadingText.text = ""
             }
         })
+
+        faskesViewModel.provincesFetching.observe(this, Observer {
+            val spinnerLoadingText : TextView = findViewById(R.id.provinceSpinnerLoadingText)
+            if (it) {
+                spinnerLoadingText.text = "Loading..."
+            } else {
+                spinnerLoadingText.text = ""
+            }
+        })
+
+        faskesViewModel.provinces.observe(this, Observer {
+            val provinceSpinner: Spinner = findViewById(R.id.province_spinner)
+            val array: ArrayList<String> = ArrayList();
+
+            if (it != null) {
+                for (prov in it) {
+                    array.add(prov.nama!!)
+                }
+            } else {
+                Log.i("Test", "Null value")
+            }
+
+            val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                array.toTypedArray()
+            )
+            adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+            provinceSpinner.adapter = adapterTemp
+        })
+
+        faskesViewModel.cities.observe(this, Observer {
+            val citySpinner: Spinner = findViewById(R.id.city_spinner)
+            val array: ArrayList<String> = ArrayList();
+
+            if (it != null) {
+                for (city in it) {
+                    array.add(city.nama!!)
+                }
+            } else {
+                Log.i("Cities", "Null value")
+            }
+
+            val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                array.toTypedArray()
+            )
+            adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+            citySpinner.adapter = adapterTemp
+        })
+
+        setOrientation()
+        setupProvinceSpinner()
+        setupCitySpinner()
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
@@ -80,14 +108,6 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
         citySpinner.adapter = adapter
         citySpinner.onItemSelectedListener = this
-
-//        val citySpinnerLoadingText: TextView = findViewById(R.id.citySpinnerLoadingText)
-//        if (testArray.isEmpty()){
-//            citySpinnerLoadingText.visibility = View.VISIBLE;
-//        }
-//        else{
-//            citySpinnerLoadingText.visibility = View.GONE;
-//        }
     }
 
     private fun setupProvinceSpinner() {
@@ -101,26 +121,21 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         provinceSpinner.adapter = adapter
         provinceSpinner.onItemSelectedListener = this
 
-
-//        val provinceSpinnerLoadingText: TextView = findViewById(R.id.provinceSpinnerLoadingText)
-//        if (testArray.isEmpty()){
-//            provinceSpinnerLoadingText.visibility = View.VISIBLE;
-//        }
-//        else{
-//            provinceSpinnerLoadingText.visibility = View.GONE;
-//        }
+        ProvincesController(faskesViewModel).start()
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
-        val sel: String = parent.getItemAtPosition(pos) as String
 
         val spinnerId = parent.id;
         if (spinnerId == R.id.province_spinner) {
-            Log.i("SpinnerProvince", "Province : $sel");
+            val prov : ProvinceModel? = faskesViewModel.provinces.value?.get(pos)
+            if (prov != null){
+                CityController(faskesViewModel).start(prov.id.toString())
+            }
         } else if (spinnerId == R.id.city_spinner) {
-            Log.i("SpinnerCity", "City : $sel");
+            Log.i("SpinnerCity", "City : ");
         }
 
     }
@@ -145,8 +160,8 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         } else {
             ml.orientation = LinearLayout.VERTICAL
             divider.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                width=ConstraintLayout.LayoutParams.MATCH_PARENT
-                height=4
+                width = ConstraintLayout.LayoutParams.MATCH_PARENT
+                height = 4
                 bottomToBottom = R.id.leftMainLayout
             }
         }

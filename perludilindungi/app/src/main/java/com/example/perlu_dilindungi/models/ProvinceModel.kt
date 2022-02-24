@@ -1,7 +1,7 @@
 package com.example.perlu_dilindungi
 
 class ListOfProvince{
-    var provinsi: List<ProvinceModel>? = null
+    var provinsi: ArrayList<ProvinceModel>? = null
 }
 
 class ProvinceModel{

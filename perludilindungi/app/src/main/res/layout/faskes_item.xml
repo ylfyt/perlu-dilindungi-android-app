@@ -53,6 +53,8 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
             />
 
     </LinearLayout>
