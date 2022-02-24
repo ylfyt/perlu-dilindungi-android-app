@@ -1,13 +1,15 @@
 package com.example.perlu_dilindungi
 
+import android.app.ActionBar
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.view.ViewGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,6 +22,8 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_faskes)
 
+        setOrientation()
+
         setupProvinceSpinner()
         setupCitySpinner()
 
@@ -27,18 +31,18 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             .baseUrl(IRetrofit.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
-        val API:IRetrofit = rf.create(IRetrofit::class.java)
+        val API: IRetrofit = rf.create(IRetrofit::class.java)
         val call: Call<ListOfProvince?>? = API.provinces
 
         val provinceSpinnerLoadingText: TextView = findViewById(R.id.provinceSpinnerLoadingText)
         provinceSpinnerLoadingText.text = "Loading..."
-        call?.enqueue(object :Callback<ListOfProvince?>{
+        call?.enqueue(object : Callback<ListOfProvince?> {
             override fun onResponse(
                 call: Call<ListOfProvince?>,
                 response: Response<ListOfProvince?>
             ) {
                 provinceSpinnerLoadingText.text = "Success"
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     val provinces = response.body()
                     Log.i("success", "Yeeeay");
 //                    if (provinces != null) {
@@ -48,8 +52,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 //                            }
 //                        }
 //                    }
-                }
-                else{
+                } else {
                     Log.i("Something Wrong", response.raw().toString())
                     provinceSpinnerLoadingText.text = "Fail"
                 }
@@ -62,7 +65,8 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             }
         })
 
-        supportFragmentManager.beginTransaction().replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
     }
 
     private fun setupCitySpinner() {
@@ -113,10 +117,9 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         val sel: String = parent.getItemAtPosition(pos) as String
 
         val spinnerId = parent.id;
-        if (spinnerId == R.id.province_spinner){
+        if (spinnerId == R.id.province_spinner) {
             Log.i("SpinnerProvince", "Province : $sel");
-        }
-        else if (spinnerId == R.id.city_spinner){
+        } else if (spinnerId == R.id.city_spinner) {
             Log.i("SpinnerCity", "City : $sel");
         }
 
@@ -125,5 +128,27 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Another interface callback
         Log.i("Spinner", "Nothing Selected")
+    }
+
+    private fun setOrientation() {
+        val ml: LinearLayout = findViewById(R.id.mainLayout)
+        val divider: View = findViewById(R.id.mainLayoutDivider)
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ml.orientation = LinearLayout.HORIZONTAL
+
+            divider.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                width = 4
+                height = ConstraintLayout.LayoutParams.MATCH_PARENT
+                endToEnd = R.id.leftMainLayout
+            }
+        } else {
+            ml.orientation = LinearLayout.VERTICAL
+            divider.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                width=ConstraintLayout.LayoutParams.MATCH_PARENT
+                height=4
+                bottomToBottom = R.id.leftMainLayout
+            }
+        }
     }
 }
