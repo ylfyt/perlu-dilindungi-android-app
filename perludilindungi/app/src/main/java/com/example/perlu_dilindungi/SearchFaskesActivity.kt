@@ -29,6 +29,16 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
         faskesViewModel = ViewModelProvider(this)[FaskesViewModel::class.java]
 
+        val searchButton: Button = findViewById(R.id.searchButton)
+        searchButton.setOnClickListener{
+            if (faskesViewModel.provinceSelected.value != null && faskesViewModel.citySelected.value != null){
+                val city = faskesViewModel.cities.value?.get(faskesViewModel.citySelected.value!!)
+                if (city != null) {
+                    FaskesController(faskesViewModel).start(city.nama.toString())
+                }
+            }
+        }
+
         faskesViewModel.provinceSelected.observe(this, Observer {
             if (it != null){
                 val prov : ProvinceModel? = faskesViewModel.provinces.value?.get(it)
@@ -101,8 +111,19 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             citySpinner.adapter = adapterTemp
         })
 
+        faskesViewModel.faskesesFetching.observe(this, Observer {
+            if (it){
+                searchButton.text = "Please Wait..."
+            }
+            else{
+                searchButton.text = "Search"
+            }
+        })
+
         faskesViewModel.faskeses.observe(this, Observer {
         })
+
+
 
 
 
@@ -110,15 +131,6 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         setupProvinceSpinner()
         setupCitySpinner()
 
-        val searchButton: Button = findViewById(R.id.searchButton)
-        searchButton.setOnClickListener{
-            if (faskesViewModel.provinceSelected.value != null && faskesViewModel.citySelected.value != null){
-                val city = faskesViewModel.cities.value?.get(faskesViewModel.citySelected.value!!)
-                if (city != null) {
-                    FaskesController(faskesViewModel).start(city.nama.toString())
-                }
-            }
-        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
     }
