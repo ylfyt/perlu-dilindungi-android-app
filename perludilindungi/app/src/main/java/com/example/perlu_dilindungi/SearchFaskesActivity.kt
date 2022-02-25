@@ -1,10 +1,13 @@
 package com.example.perlu_dilindungi
 
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
@@ -22,16 +25,59 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     private lateinit var faskesViewModel: FaskesViewModel
     private var initProvSpinner = true
     private var initCitySpinner = true
+    private var permissionGranted = false
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_faskes)
+        val locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            permissionGranted = when {
+                permissions.getOrDefault(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    false
+                ) -> {
+                    // Precise location access granted.
+                    true
+                }
+                permissions.getOrDefault(
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    false
+                ) -> {
+                    // Only approximate location access granted.
+                    true
+                }
+                else -> {
+                    // No location access granted.
+                    false
+                }
+            }
+        }
+
+        locationPermissionRequest.launch(
+            arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
 
         faskesViewModel = ViewModelProvider(this)[FaskesViewModel::class.java]
 
         val searchButton: Button = findViewById(R.id.searchButton)
-        searchButton.setOnClickListener{
-            if (faskesViewModel.provinceSelected.value != null && faskesViewModel.citySelected.value != null){
+        searchButton.setOnClickListener {
+            if (faskesViewModel.provinceSelected.value != null && faskesViewModel.citySelected.value != null) {
+                if (!permissionGranted) {
+                    locationPermissionRequest.launch(
+                        arrayOf(
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+
+                    return@setOnClickListener
+                }
                 val city = faskesViewModel.cities.value?.get(faskesViewModel.citySelected.value!!)
                 if (city != null) {
                     FaskesController(faskesViewModel).start(city.nama.toString())
@@ -40,19 +86,18 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         }
 
         faskesViewModel.provinceSelected.observe(this, Observer {
-            if (it != null){
-                val prov : ProvinceModel? = faskesViewModel.provinces.value?.get(it)
-                if (prov != null){
+            if (it != null) {
+                val prov: ProvinceModel? = faskesViewModel.provinces.value?.get(it)
+                if (prov != null) {
                     CityController(faskesViewModel).start(prov.id.toString())
                 }
-            }
-            else{
+            } else {
                 faskesViewModel.cities.value = null
             }
         })
 
         faskesViewModel.citiesFetching.observe(this, Observer {
-            val spinnerLoadingText : TextView = findViewById(R.id.citySpinnerLoadingText)
+            val spinnerLoadingText: TextView = findViewById(R.id.citySpinnerLoadingText)
             if (it) {
                 spinnerLoadingText.text = "Loading..."
             } else {
@@ -61,7 +106,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         })
 
         faskesViewModel.provincesFetching.observe(this, Observer {
-            val spinnerLoadingText : TextView = findViewById(R.id.provinceSpinnerLoadingText)
+            val spinnerLoadingText: TextView = findViewById(R.id.provinceSpinnerLoadingText)
             if (it) {
                 spinnerLoadingText.text = "Loading..."
             } else {
@@ -112,19 +157,15 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         })
 
         faskesViewModel.faskesesFetching.observe(this, Observer {
-            if (it){
+            if (it) {
                 searchButton.text = "Please Wait..."
-            }
-            else{
+            } else {
                 searchButton.text = "Search"
             }
         })
 
         faskesViewModel.faskeses.observe(this, Observer {
         })
-
-
-
 
 
         setOrientation()
@@ -165,7 +206,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         val spinnerId = parent.id;
         if (spinnerId == R.id.province_spinner) {
-            if (initProvSpinner){
+            if (initProvSpinner) {
                 initProvSpinner = false
 //                if (faskesViewModel.provinceSelected.value != null){
 //                    Log.i("Selection", parent[faskesViewModel.provinceSelected.value!!].toString())
@@ -173,22 +214,20 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 //                }
                 return
             }
-            if (pos < 1){
+            if (pos < 1) {
                 faskesViewModel.provinceSelected.value = null
-            }
-            else{
-                faskesViewModel.provinceSelected.value = pos-1
+            } else {
+                faskesViewModel.provinceSelected.value = pos - 1
             }
         } else if (spinnerId == R.id.city_spinner) {
-            if (initCitySpinner){
+            if (initCitySpinner) {
                 initCitySpinner = false
                 return
             }
-            if (pos < 1){
+            if (pos < 1) {
                 faskesViewModel.citySelected.value = null
-            }
-            else{
-                faskesViewModel.citySelected.value = pos-1
+            } else {
+                faskesViewModel.citySelected.value = pos - 1
             }
         }
 

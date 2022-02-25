@@ -1,5 +1,6 @@
 package com.example.perlu_dilindungi.request_controllers
 
+import android.location.LocationManager
 import android.util.Log
 import com.example.perlu_dilindungi.view_models.FaskesViewModel
 import com.example.perlu_dilindungi.services.IRetrofit
