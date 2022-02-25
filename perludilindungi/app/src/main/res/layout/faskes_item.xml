@@ -74,6 +74,7 @@
             android:text="Jl. Mayjen H.R. Edi Sukma No.75, Watesjaya, Cigombong, Bogor, Jawa Barat 16740, Indonesia"
             android:gravity="start|top"
             android:inputType="textMultiLine"
+            android:focusable="false"
             android:textSize="12sp"
             android:paddingTop="0dp"
             android:paddingHorizontal="0dp"

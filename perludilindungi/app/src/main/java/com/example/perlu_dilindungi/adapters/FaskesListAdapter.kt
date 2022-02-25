@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.get
 import com.example.perlu_dilindungi.R
 import com.example.perlu_dilindungi.models.FaskesDetailModel
@@ -42,6 +43,8 @@ class FaskesListAdapter(private val context: Activity, private val arrayList: Ar
         faskesAddress.setText(faskes.alamat)
         faskesNumber.text = faskes.telp
         faskesCode.text = "KODE : " + faskes.kode
+
+
 
         return view
     }
