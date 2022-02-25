@@ -47,6 +47,14 @@ class FaskesListFragment : Fragment() {
                     faskesListView.adapter = faskesListAdapter
                 }
             }
+            else{
+                val faskesListAdapter = FaskesListAdapter(context as Activity, ArrayList())
+                val faskesListView : ListView? = view?.findViewById(R.id.faskesListView)
+
+                if (faskesListView != null) {
+                    faskesListView.adapter = faskesListAdapter
+                }
+            }
         })
     }
 }

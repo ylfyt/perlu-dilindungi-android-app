@@ -168,6 +168,8 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                 faskesViewModel.citySelected.value = pos-1
             }
         }
+
+        faskesViewModel.faskeses.value = null
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {
