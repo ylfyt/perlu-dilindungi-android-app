@@ -2,6 +2,7 @@ package com.example.perlu_dilindungi.fragments
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,8 +14,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.perlu_dilindungi.FaskesDetailActivity
+import com.example.perlu_dilindungi.MainActivity
 import com.example.perlu_dilindungi.R
 import com.example.perlu_dilindungi.adapters.FaskesListAdapter
+import com.example.perlu_dilindungi.models.FaskesDetailModel
 import com.example.perlu_dilindungi.models.FaskesModel
 import com.example.perlu_dilindungi.view_models.FaskesViewModel
 
@@ -51,7 +55,9 @@ class FaskesListFragment : Fragment() {
 
                 faskesListView?.onItemClickListener =
                     OnItemClickListener { parent, view, position, id ->
-                        Toast.makeText(getContext(), it[position].id.toString(), Toast.LENGTH_SHORT).show()
+                        val i = Intent(getContext(), FaskesDetailActivity::class.java)
+                        i.putExtra("faskesId", it[position].id)
+                        startActivity(i)
                     }
             }
             else{
