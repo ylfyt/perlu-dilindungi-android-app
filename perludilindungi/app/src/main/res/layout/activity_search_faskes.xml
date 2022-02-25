@@ -91,7 +91,7 @@
             android:id="@+id/citySpinnerLoadingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading..."
+            android:text=""
             app:layout_constraintTop_toTopOf="@+id/city_spinner"
             app:layout_constraintBottom_toBottomOf="@+id/city_spinner"
             app:layout_constraintStart_toStartOf="@id/city_spinner"

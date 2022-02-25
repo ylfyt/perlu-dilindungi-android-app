@@ -27,9 +27,18 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         setContentView(R.layout.activity_search_faskes)
 
         faskesViewModel = ViewModelProvider(this)[FaskesViewModel::class.java]
-//        Log.i("InitProv", (faskesViewModel.provinces.value == null).toString())
-//        Log.i("InitCity", (faskesViewModel.cities.value == null).toString())
-//        Log.i("InitFaskes", (faskesViewModel.faskeses.value == null).toString())
+
+        faskesViewModel.provinceSelected.observe(this, Observer {
+            if (it != null){
+                val prov : ProvinceModel? = faskesViewModel.provinces.value?.get(it)
+                if (prov != null){
+                    CityController(faskesViewModel).start(prov.id.toString())
+                }
+            }
+            else{
+                faskesViewModel.cities.value = null
+            }
+        })
 
         faskesViewModel.citiesFetching.observe(this, Observer {
             val spinnerLoadingText : TextView = findViewById(R.id.citySpinnerLoadingText)
@@ -52,8 +61,8 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         faskesViewModel.provinces.observe(this, Observer {
             val provinceSpinner: Spinner = findViewById(R.id.province_spinner)
             val array: ArrayList<String> = ArrayList();
-
             if (it != null) {
+                array.add("Pilih Provinsi")
                 for (prov in it) {
                     array.add(prov.nama!!)
                 }
@@ -73,8 +82,8 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         faskesViewModel.cities.observe(this, Observer {
             val citySpinner: Spinner = findViewById(R.id.city_spinner)
             val array: ArrayList<String> = ArrayList();
-
             if (it != null) {
+                array.add("Pilih Kota")
                 for (city in it) {
                     array.add(city.nama!!)
                 }
@@ -94,12 +103,23 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         faskesViewModel.faskeses.observe(this, Observer {
         })
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
+
 
         setOrientation()
         setupProvinceSpinner()
         setupCitySpinner()
+
+        val searchButton: Button = findViewById(R.id.searchButton)
+        searchButton.setOnClickListener{
+            if (faskesViewModel.provinceSelected.value != null && faskesViewModel.citySelected.value != null){
+                val city = faskesViewModel.cities.value?.get(faskesViewModel.citySelected.value!!)
+                if (city != null) {
+                    FaskesController(faskesViewModel).start(city.nama.toString())
+                }
+            }
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
     }
 
     private fun setupCitySpinner() {
@@ -132,19 +152,22 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
-
         val spinnerId = parent.id;
         if (spinnerId == R.id.province_spinner) {
-            val prov : ProvinceModel? = faskesViewModel.provinces.value?.get(pos)
-            if (prov != null){
-                CityController(faskesViewModel).start(prov.id.toString())
+            if (pos < 1){
+                faskesViewModel.provinceSelected.value = null
+            }
+            else{
+                faskesViewModel.provinceSelected.value = pos-1
             }
         } else if (spinnerId == R.id.city_spinner) {
-            val cit = parent.getItemAtPosition(pos)
-            FaskesController(faskesViewModel).start(cit.toString())
-
+            if (pos < 1){
+                faskesViewModel.citySelected.value = null
+            }
+            else{
+                faskesViewModel.citySelected.value = pos-1
+            }
         }
-
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {

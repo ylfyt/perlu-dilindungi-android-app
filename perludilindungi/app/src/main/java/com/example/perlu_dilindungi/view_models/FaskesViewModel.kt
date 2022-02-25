@@ -8,6 +8,13 @@ import com.example.perlu_dilindungi.models.FaskesModel
 
 class FaskesViewModel : ViewModel() {
 
+    val provinceSelected: MutableLiveData<Int?> by lazy {
+        MutableLiveData<Int?>()
+    }
+    val citySelected: MutableLiveData<Int?> by lazy {
+        MutableLiveData<Int?>()
+    }
+
     val provincesFetching: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
