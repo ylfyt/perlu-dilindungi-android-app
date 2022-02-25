@@ -26,11 +26,10 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_faskes)
 
-
-        faskesViewModel = ViewModelProvider(this).get(FaskesViewModel::class.java)
-        faskesViewModel.provinces.value = null
-        faskesViewModel.cities.value = null
-        faskesViewModel.faskeses.value = null
+        faskesViewModel = ViewModelProvider(this)[FaskesViewModel::class.java]
+//        Log.i("InitProv", (faskesViewModel.provinces.value == null).toString())
+//        Log.i("InitCity", (faskesViewModel.cities.value == null).toString())
+//        Log.i("InitFaskes", (faskesViewModel.faskeses.value == null).toString())
 
         faskesViewModel.citiesFetching.observe(this, Observer {
             val spinnerLoadingText : TextView = findViewById(R.id.citySpinnerLoadingText)
@@ -59,7 +58,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                     array.add(prov.nama!!)
                 }
             } else {
-                Log.i("Test", "Null value")
+                Log.i("ViewModel:Provinces", "Null value")
             }
 
             val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -80,7 +79,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                     array.add(city.nama!!)
                 }
             } else {
-                Log.i("Cities", "Null value")
+                Log.i("ViewModel:Cities", "Null value")
             }
 
             val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -92,12 +91,15 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             citySpinner.adapter = adapterTemp
         })
 
+        faskesViewModel.faskeses.observe(this, Observer {
+        })
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
+
         setOrientation()
         setupProvinceSpinner()
         setupCitySpinner()
-        
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.faskesListFragmentReplace, FaskesListFragment(ArrayList<FaskesModel>())).commit()
     }
 
     private fun setupCitySpinner() {
@@ -138,7 +140,9 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                 CityController(faskesViewModel).start(prov.id.toString())
             }
         } else if (spinnerId == R.id.city_spinner) {
-            Log.i("SpinnerCity", "City : ");
+            val cit = parent.getItemAtPosition(pos)
+            FaskesController(faskesViewModel).start(cit.toString())
+
         }
 
     }

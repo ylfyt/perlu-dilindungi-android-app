@@ -21,7 +21,8 @@ class FaskesController(faskesViewModel: FaskesViewModel) : Callback<FaskesRespon
             .baseUrl(IRetrofit.BASE_URL_FASKES)
             .build()
         val service: IRetrofit = retrofit.create(IRetrofit::class.java)
-        service.getFaskeses(city)?.enqueue(this)
+        val cit = city.replace("kabupaten", "KAB.", true)
+        service.getFaskeses(cit)?.enqueue(this)
     }
 
     override fun onResponse(call: Call<FaskesResponseModel?>, response: Response<FaskesResponseModel?>) {
@@ -29,7 +30,6 @@ class FaskesController(faskesViewModel: FaskesViewModel) : Callback<FaskesRespon
             val faskeses = response.body()
             if (faskeses != null) {
                 viewModel.faskeses.value = faskeses.data
-                Log.i("Faskes", faskeses.data?.size.toString())
             }
         }
         viewModel.faskesesFetching.value = false
