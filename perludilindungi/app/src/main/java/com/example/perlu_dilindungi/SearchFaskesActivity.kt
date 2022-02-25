@@ -99,7 +99,8 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
                 val city = faskesViewModel.cities.value?.get(faskesViewModel.citySelected.value!!)
                 if (city != null) {
-                    FaskesController(faskesViewModel).start(city.nama.toString())
+                    FaskesController(faskesViewModel).start(city.nama.toString(),
+                        longitude!!, latitude!!)
                 }
             }
         }
