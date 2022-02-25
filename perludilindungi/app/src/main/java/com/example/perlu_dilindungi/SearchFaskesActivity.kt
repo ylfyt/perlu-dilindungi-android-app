@@ -11,7 +11,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.perlu_dilindungi.fragments.FaskesListFragment
-import com.example.perlu_dilindungi.models.FaskesModel
 import com.example.perlu_dilindungi.request_controllers.CityController
 import com.example.perlu_dilindungi.request_controllers.FaskesController
 import com.example.perlu_dilindungi.request_controllers.ProvincesController
@@ -21,6 +20,8 @@ import com.example.perlu_dilindungi.view_models.FaskesViewModel
 class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var faskesViewModel: FaskesViewModel
+    private var initProvSpinner = true
+    private var initCitySpinner = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,10 +151,16 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
         val spinnerId = parent.id;
         if (spinnerId == R.id.province_spinner) {
+            if (initProvSpinner){
+                initProvSpinner = false
+//                if (faskesViewModel.provinceSelected.value != null){
+//                    Log.i("Selection", parent[faskesViewModel.provinceSelected.value!!].toString())
+//                    view?.findViewById<Spinner>(spinnerId)?.setSelection(faskesViewModel.provinceSelected.value!!)
+//                }
+                return
+            }
             if (pos < 1){
                 faskesViewModel.provinceSelected.value = null
             }
@@ -161,6 +168,10 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                 faskesViewModel.provinceSelected.value = pos-1
             }
         } else if (spinnerId == R.id.city_spinner) {
+            if (initCitySpinner){
+                initCitySpinner = false
+                return
+            }
             if (pos < 1){
                 faskesViewModel.citySelected.value = null
             }
