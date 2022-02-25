@@ -1,6 +1,8 @@
 package com.example.perlu_dilindungi
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -18,19 +20,27 @@ import com.example.perlu_dilindungi.request_controllers.CityController
 import com.example.perlu_dilindungi.request_controllers.FaskesController
 import com.example.perlu_dilindungi.request_controllers.ProvincesController
 import com.example.perlu_dilindungi.view_models.FaskesViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 
 class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
-
+    private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var faskesViewModel: FaskesViewModel
     private var initProvSpinner = true
     private var initCitySpinner = true
     private var permissionGranted = false
 
+    private var longitude: Double? = null
+    private var latitude: Double? = null
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_faskes)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -40,6 +50,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                     false
                 ) -> {
                     // Precise location access granted.
+                    getLocation()
                     true
                 }
                 permissions.getOrDefault(
@@ -47,6 +58,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                     false
                 ) -> {
                     // Only approximate location access granted.
+                    getLocation()
                     true
                 }
                 else -> {
@@ -78,6 +90,13 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
                     return@setOnClickListener
                 }
+
+                if (latitude == null || longitude == null){
+                    Toast.makeText(this, "Location unknown", Toast.LENGTH_LONG).show()
+                    getLocation()
+                    return@setOnClickListener
+                }
+
                 val city = faskesViewModel.cities.value?.get(faskesViewModel.citySelected.value!!)
                 if (city != null) {
                     FaskesController(faskesViewModel).start(city.nama.toString())
@@ -174,6 +193,16 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+            location?.let {
+                longitude = it.longitude
+                latitude = it.latitude
+            }
+        }
     }
 
     private fun setupCitySpinner() {
