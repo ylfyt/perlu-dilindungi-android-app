@@ -1,6 +1,7 @@
 package com.example.perlu_dilindungi.adapters
 
 import android.app.Activity
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,10 +29,18 @@ class FaskesListAdapter(private val context: Activity, private val arrayList: Ar
 
         val faskes :FaskesModel = arrayList[position]
         faskesNameText.text = faskes.nama
-        faskesType.text = faskes.jenis_faskes
+        if (faskes.jenis_faskes != ""){
+            faskesType.text = faskes.jenis_faskes
+            if (faskes.jenis_faskes == "RUMAH SAKIT"){
+                faskesType.setBackgroundColor(Color.parseColor("#5D5FEF"))
+            }
+        }
+        else{
+            faskesType.visibility = View.INVISIBLE
+        }
         faskesAddress.setText(faskes.alamat)
         faskesNumber.text = faskes.telp
-        faskesCode.text = faskes.kode
+        faskesCode.text = "KODE : " + faskes.kode
 
         return view
     }
