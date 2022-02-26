@@ -18,7 +18,7 @@ class FaskesController(faskesViewModel: FaskesViewModel) : Callback<FaskesRespon
     private var currentLatitude: Double = 0.0
     private var currentLongitude: Double = 0.0
 
-    fun start(city: String, longitude: Double, latitude: Double) {
+    fun start(province: String, city: String, longitude: Double, latitude: Double) {
         currentLatitude = latitude
         currentLongitude = longitude
         viewModel.faskesesFetching.value = true
@@ -27,8 +27,7 @@ class FaskesController(faskesViewModel: FaskesViewModel) : Callback<FaskesRespon
             .baseUrl(IRetrofit.BASE_URL_FASKES)
             .build()
         val service: IRetrofit = retrofit.create(IRetrofit::class.java)
-        val cit = city.replace("kabupaten", "KAB.", true)
-        service.getFaskeses(cit)?.enqueue(this)
+        service.getFaskeses(province, city)?.enqueue(this)
     }
 
     override fun onResponse(

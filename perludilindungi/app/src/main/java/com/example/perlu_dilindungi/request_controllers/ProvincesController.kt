@@ -2,7 +2,7 @@ package com.example.perlu_dilindungi.request_controllers
 
 import com.example.perlu_dilindungi.view_models.FaskesViewModel
 import com.example.perlu_dilindungi.services.IRetrofit
-import com.example.perlu_dilindungi.ListOfProvince
+import com.example.perlu_dilindungi.models.ListOfProvince
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +26,7 @@ class ProvincesController(faskesViewModel: FaskesViewModel) : Callback<ListOfPro
         if (response.isSuccessful){
             val provinces = response.body()
             if (provinces != null) {
-                viewModel.provinces.value = provinces.provinsi
+                viewModel.provinces.value = provinces.results
             }
         }
         viewModel.provincesFetching.value = false

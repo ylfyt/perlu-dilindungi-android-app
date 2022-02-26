@@ -3,7 +3,7 @@ package com.example.perlu_dilindungi.view_models
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.perlu_dilindungi.CityModel
-import com.example.perlu_dilindungi.ProvinceModel
+import com.example.perlu_dilindungi.models.ProvinceModel
 import com.example.perlu_dilindungi.models.FaskesModel
 
 class FaskesViewModel : ViewModel() {

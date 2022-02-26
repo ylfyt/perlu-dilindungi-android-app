@@ -12,11 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.perlu_dilindungi.fragments.FaskesListFragment
+import com.example.perlu_dilindungi.models.ProvinceModel
 import com.example.perlu_dilindungi.request_controllers.CityController
 import com.example.perlu_dilindungi.request_controllers.FaskesController
 import com.example.perlu_dilindungi.request_controllers.ProvincesController
@@ -99,8 +99,9 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                 }
 
                 val city = faskesViewModel.cities.value?.get(faskesViewModel.citySelected.value!!)
-                if (city != null) {
-                    FaskesController(faskesViewModel).start(city.nama.toString(),
+                val prov = faskesViewModel.provinces.value?.get(faskesViewModel.provinceSelected.value!!)
+                if (city != null && prov != null) {
+                    FaskesController(faskesViewModel).start(prov.key!!, city.key!!,
                         longitude!!, latitude!!)
                 }
             }
@@ -110,7 +111,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             if (it != null) {
                 val prov: ProvinceModel? = faskesViewModel.provinces.value?.get(it)
                 if (prov != null) {
-                    CityController(faskesViewModel).start(prov.id.toString())
+                    CityController(faskesViewModel).start(prov.key!!)
                 }
             } else {
                 faskesViewModel.cities.value = null
@@ -141,7 +142,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             if (it != null) {
                 array.add("Pilih Provinsi")
                 for (prov in it) {
-                    array.add(prov.nama!!)
+                    array.add(prov.value!!)
                 }
             } else {
                 Log.i("ViewModel:Provinces", "Null value")
@@ -162,7 +163,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             if (it != null) {
                 array.add("Pilih Kota")
                 for (city in it) {
-                    array.add(city.nama!!)
+                    array.add(city.value!!)
                 }
             } else {
                 Log.i("ViewModel:Cities", "Null value")
@@ -239,10 +240,6 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         if (spinnerId == R.id.province_spinner) {
             if (initProvSpinner) {
                 initProvSpinner = false
-//                if (faskesViewModel.provinceSelected.value != null){
-//                    Log.i("Selection", parent[faskesViewModel.provinceSelected.value!!].toString())
-//                    view?.findViewById<Spinner>(spinnerId)?.setSelection(faskesViewModel.provinceSelected.value!!)
-//                }
                 return
             }
             if (pos < 1) {

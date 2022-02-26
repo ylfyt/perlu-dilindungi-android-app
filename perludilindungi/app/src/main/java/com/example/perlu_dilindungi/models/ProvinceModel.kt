@@ -1,10 +1,12 @@
-package com.example.perlu_dilindungi
+package com.example.perlu_dilindungi.models
 
 class ListOfProvince{
-    var provinsi: ArrayList<ProvinceModel>? = null
+    var curr_val : String? = null
+    var message : String? = null
+    var results: ArrayList<ProvinceModel>? = null
 }
 
 class ProvinceModel{
-    var id = 0
-    var nama: String ? = null
+    var key: String? = null
+    var value: String ? = null
 }

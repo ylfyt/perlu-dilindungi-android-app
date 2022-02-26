@@ -12,21 +12,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 class CityController(faskesViewModel: FaskesViewModel) : Callback<ListOfCity?> {
     private var viewModel: FaskesViewModel = faskesViewModel
 
-    fun start(provId: String) {
+    fun start(start_id: String) {
         viewModel.citiesFetching.value = true
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(IRetrofit.BASE_URL_DAERAH)
             .build()
         val service: IRetrofit = retrofit.create(IRetrofit::class.java)
-        service.getCities(provId)?.enqueue(this)
+        service.getCities(start_id)?.enqueue(this)
     }
 
     override fun onResponse(call: Call<ListOfCity?>, response: Response<ListOfCity?>) {
         if (response.isSuccessful){
             val cities = response.body()
             if (cities != null) {
-                viewModel.cities.value = cities.kota_kabupaten
+                viewModel.cities.value = cities.results
             }
         }
 

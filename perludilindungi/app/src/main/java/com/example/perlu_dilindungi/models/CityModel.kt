@@ -1,11 +1,12 @@
 package com.example.perlu_dilindungi
 
 class ListOfCity{
-    var kota_kabupaten: ArrayList<CityModel>? = null
+    var curr_val: String? = null
+    var message: String? = null
+    var results: ArrayList<CityModel>? = null
 }
 
 class CityModel{
-    var id = 0
-    var id_provinsi: String? = null
-    var nama: String ? = null
+    var key: String? = null
+    var value: String ? = null
 }
