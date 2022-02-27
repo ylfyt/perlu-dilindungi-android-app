@@ -13,8 +13,8 @@ class FaskesDetailActivity : AppCompatActivity() {
         val province: String? = intent.getStringExtra("province")
         val city: String? = intent.getStringExtra("city")
 
-        val faskesIdTextView: TextView = findViewById(R.id.faskesIdTextView)
-        faskesIdTextView.text = faskesId.toString()
+//        val faskesIdTextView: TextView = findViewById(R.id.detafaskesIdTextView)
+//        faskesIdTextView.text = faskesId.toString()
 
     }
 }
