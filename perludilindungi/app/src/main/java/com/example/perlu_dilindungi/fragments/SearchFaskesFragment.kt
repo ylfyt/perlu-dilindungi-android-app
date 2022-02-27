@@ -142,26 +142,28 @@ class SearchFaskesFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
         })
 
-        faskesViewModel.provinces.observe(requireActivity(), Observer {
-            val provinceSpinner: Spinner = rootView.findViewById(R.id.province_spinner)
-            val array: ArrayList<String> = ArrayList();
-            if (it != null) {
-                array.add("Pilih Provinsi")
-                for (prov in it) {
-                    array.add(prov.value!!)
+        activity?.let {
+            faskesViewModel.provinces.observe(it, Observer {
+                val provinceSpinner: Spinner = rootView.findViewById(R.id.province_spinner)
+                val array: ArrayList<String> = ArrayList();
+                if (it != null) {
+                    array.add("Pilih Provinsi")
+                    for (prov in it) {
+                        array.add(prov.value!!)
+                    }
+                } else {
+                    Log.i("ViewModel:Provinces", "Null value")
                 }
-            } else {
-                Log.i("ViewModel:Provinces", "Null value")
-            }
 
-            val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
-                requireActivity(),
-                android.R.layout.simple_spinner_item,
-                array.toTypedArray()
-            )
-            adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-            provinceSpinner.adapter = adapterTemp
-        })
+                val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
+                    requireActivity(),
+                    android.R.layout.simple_spinner_item,
+                    array.toTypedArray()
+                )
+                adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+                provinceSpinner.adapter = adapterTemp
+            })
+        }
 
         faskesViewModel.cities.observe(requireActivity(), Observer {
             val citySpinner: Spinner = rootView.findViewById(R.id.city_spinner)

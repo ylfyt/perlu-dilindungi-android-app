@@ -16,6 +16,18 @@
 
     </FrameLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_qr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/navbarView"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navbarView"
         android:layout_width="match_parent"
@@ -24,6 +36,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navbar_menu"
+        android:background="#41A7F6"
+        app:itemTextColor="@color/white"
+        app:itemRippleColor="@color/white"
         />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
