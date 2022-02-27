@@ -38,4 +38,8 @@ class FaskesViewModel : ViewModel() {
     val faskeses : MutableLiveData<ArrayList<FaskesModel>?> by lazy {
         MutableLiveData<ArrayList<FaskesModel>?>()
     }
+
+    val faskes : MutableLiveData<FaskesModel?> by lazy {
+        MutableLiveData<FaskesModel?>()
+    }
 }

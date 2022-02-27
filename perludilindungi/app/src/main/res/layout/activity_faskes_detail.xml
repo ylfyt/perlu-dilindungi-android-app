@@ -31,7 +31,7 @@
         >
 
         <TextView
-            android:id="@+id/faskesNameText"
+            android:id="@+id/detail_FaskesKodeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kode: 10040305"
@@ -44,7 +44,7 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/faskesType"
+            android:id="@+id/detail_FaskesType"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="#EF5DA8"
