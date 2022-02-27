@@ -124,7 +124,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/detail_GoogleMapButton"
         android:layout_width="wrap_content"
-        android:layout_height="26dp"
+        android:layout_height="wrap_content"
         android:text="Google Maps"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +139,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/detail_BookmarkButton"
         android:layout_width="wrap_content"
-        android:layout_height="26dp"
+        android:layout_height="wrap_content"
         android:text="@string/bookmark_text"
         android:paddingHorizontal="20dp"
         app:layout_constraintStart_toStartOf="parent"

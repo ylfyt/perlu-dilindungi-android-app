@@ -128,6 +128,9 @@ class FaskesDetailActivity : AppCompatActivity() {
             if (bookmark != null){
                 setUnbookmarkButton(true)
             }
+            else{
+                setUnbookmarkButton(false)
+            }
         }
     }
 
