@@ -57,6 +57,8 @@ class FaskesListFragment : Fragment() {
                     OnItemClickListener { parent, view, position, id ->
                         val i = Intent(getContext(), FaskesDetailActivity::class.java)
                         i.putExtra("faskesId", it[position].id)
+                        i.putExtra("province", it[position].provinsi)
+                        i.putExtra("city", it[position].kota)
                         startActivity(i)
                     }
             }

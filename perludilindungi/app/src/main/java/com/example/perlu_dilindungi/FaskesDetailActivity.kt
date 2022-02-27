@@ -10,6 +10,8 @@ class FaskesDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_faskes_detail)
 
         val faskesId: Int = intent.getIntExtra("faskesId", 0)
+        val province: String? = intent.getStringExtra("province")
+        val city: String? = intent.getStringExtra("city")
 
         val faskesIdTextView: TextView = findViewById(R.id.faskesIdTextView)
         faskesIdTextView.text = faskesId.toString()
