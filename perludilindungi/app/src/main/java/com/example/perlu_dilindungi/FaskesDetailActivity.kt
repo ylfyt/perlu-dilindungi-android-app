@@ -2,7 +2,9 @@ package com.example.perlu_dilindungi
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -70,7 +72,6 @@ class FaskesDetailActivity : AppCompatActivity() {
                     val db = DatabaseHandler(this)
                     val result = db.insertFaskesBookmark(fs)
                     if (result){
-                        Log.i("bookmark", "Success")
                         setUnbookmarkButton(true)
                     }
                 }
@@ -78,7 +79,6 @@ class FaskesDetailActivity : AppCompatActivity() {
                     val db = DatabaseHandler(this)
                     val result = db.deleteFaskesBookmark(fs.id)
                     if (result){
-                        Log.i("bookmark", "fail")
                         setUnbookmarkButton(false)
                     }
                 }
@@ -135,10 +135,16 @@ class FaskesDetailActivity : AppCompatActivity() {
         if (yes){
             val bookmarkButton: Button = findViewById(R.id.detail_BookmarkButton)
             bookmarkButton.text = resources.getString(R.string.unbookmark_text)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                bookmarkButton.background.setTint(Color.parseColor("#7879F1"))
+            }
         }
         else{
             val bookmarkButton: Button = findViewById(R.id.detail_BookmarkButton)
             bookmarkButton.text = resources.getString(R.string.bookmark_text)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                bookmarkButton.background.setTint(Color.parseColor("#EF5DA8"))
+            }
         }
     }
 }
