@@ -140,7 +140,7 @@
         android:id="@+id/detail_BookmarkButton"
         android:layout_width="wrap_content"
         android:layout_height="26dp"
-        android:text="+ Bookmark"
+        android:text="@string/bookmark_text"
         android:paddingHorizontal="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

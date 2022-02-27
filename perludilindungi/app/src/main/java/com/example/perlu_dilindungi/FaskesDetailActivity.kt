@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +13,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.perlu_dilindungi.database_handlers.DatabaseHandler
+import com.example.perlu_dilindungi.models.BookmarkModel
 import com.example.perlu_dilindungi.request_controllers.FindOneFaskesController
 import com.example.perlu_dilindungi.view_models.FaskesViewModel
 
@@ -35,7 +38,10 @@ class FaskesDetailActivity : AppCompatActivity() {
         faskesViewModel.faskes.observe(this, Observer {
             if (it != null) {
                 loadingDialog.dismissLoading()
-                setupDetail()
+                val db = DatabaseHandler(this)
+                val bookmark:BookmarkModel? = db.getFaskesBookmarkByFaskesId(it.id)
+
+                setupDetail(bookmark)
             } else {
                 FindOneFaskesController(faskesViewModel).start(province!!, city!!, faskesId)
                 loadingDialog = LoadingDialog(this)
@@ -55,9 +61,35 @@ class FaskesDetailActivity : AppCompatActivity() {
             }
 
         }
+
+        val bookmarkButton: Button = findViewById(R.id.detail_BookmarkButton)
+        bookmarkButton.setOnClickListener{
+            val fs = faskesViewModel.faskes.value
+            if (fs != null){
+                if (bookmarkButton.text == resources.getString(R.string.bookmark_text)){
+                    val db = DatabaseHandler(this)
+                    val result = db.insertFaskesBookmark(fs)
+                    if (result){
+                        Log.i("bookmark", "Success")
+                        setUnbookmarkButton(true)
+                    }
+                }
+                else{
+                    val db = DatabaseHandler(this)
+                    val result = db.deleteFaskesBookmark(fs.id)
+                    if (result){
+                        Log.i("bookmark", "fail")
+                        setUnbookmarkButton(false)
+                    }
+                }
+
+            }
+        }
+
+
     }
 
-    private fun setupDetail() {
+    private fun setupDetail(bookmark: BookmarkModel?) {
         val faskeNameTextView: TextView = findViewById(R.id.detail_FaskesNameText)
         val faskeKodeTextView: TextView = findViewById(R.id.detail_FaskesKodeText)
         val faskeTypeTextView: TextView = findViewById(R.id.detail_FaskesType)
@@ -92,6 +124,21 @@ class FaskesDetailActivity : AppCompatActivity() {
             } else {
                 faskesStatusLogoImage.setImageResource(R.drawable.tidak_siap_logo)
             }
+
+            if (bookmark != null){
+                setUnbookmarkButton(true)
+            }
+        }
+    }
+
+    private fun setUnbookmarkButton(yes: Boolean){
+        if (yes){
+            val bookmarkButton: Button = findViewById(R.id.detail_BookmarkButton)
+            bookmarkButton.text = resources.getString(R.string.unbookmark_text)
+        }
+        else{
+            val bookmarkButton: Button = findViewById(R.id.detail_BookmarkButton)
+            bookmarkButton.text = resources.getString(R.string.bookmark_text)
         }
     }
 }
