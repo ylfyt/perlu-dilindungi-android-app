@@ -16,5 +16,7 @@ class FaskesDetailActivity : AppCompatActivity() {
 //        val faskesIdTextView: TextView = findViewById(R.id.detafaskesIdTextView)
 //        faskesIdTextView.text = faskesId.toString()
 
+        val loading: LoadingDialog = LoadingDialog(this)
+        loading.startLoading()
     }
 }
