@@ -1,4 +1,4 @@
-package com.example.perlu_dilindungi
+package com.example.perlu_dilindungi.fragments
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -17,7 +17,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.example.perlu_dilindungi.fragments.FaskesListFragment
+import com.example.perlu_dilindungi.R
 import com.example.perlu_dilindungi.models.ProvinceModel
 import com.example.perlu_dilindungi.request_controllers.CityController
 import com.example.perlu_dilindungi.request_controllers.FaskesController
