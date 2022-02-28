@@ -1,6 +1,8 @@
 package com.example.perlu_dilindungi.request_controllers
 
 import android.location.Location
+import android.util.Log
+import androidx.fragment.app.activityViewModels
 import com.example.perlu_dilindungi.view_models.FaskesViewModel
 import com.example.perlu_dilindungi.services.IRetrofit
 import com.example.perlu_dilindungi.models.FaskesModel
@@ -39,7 +41,14 @@ class FaskesController(faskesViewModel: FaskesViewModel) : Callback<FaskesRespon
             if (faskeses != null) {
                 val fas = getFiveFaskes(faskeses.data)
                 viewModel.faskeses.value = fas
+                Log.i("FetchFaskes", fas?.size.toString())
             }
+            else{
+                Log.i("FetchFaskes", "Fetching faskes not success...1")
+            }
+        }
+        else{
+            Log.i("FetchFaskes", "Fetching faskes not success...2")
         }
         viewModel.faskesesFetching.value = false
     }
