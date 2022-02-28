@@ -1,9 +1,13 @@
 package com.example.perlu_dilindungi.models
 
-class BookmarkModel(
-    public var faskesId: Int,
-    public var province: String,
-    public var city: String
-) {
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-}
+@Entity
+data class BookmarkModel(
+
+    @PrimaryKey
+    val faskesId: Int = 0,
+    val province: String,
+    val city: String
+)
