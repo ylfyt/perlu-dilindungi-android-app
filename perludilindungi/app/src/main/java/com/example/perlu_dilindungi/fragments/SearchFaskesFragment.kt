@@ -1,4 +1,4 @@
-package com.example.perlu_dilindungi
+package com.example.perlu_dilindungi.fragments
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -6,16 +6,18 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.perlu_dilindungi.fragments.FaskesListFragment
+import com.example.perlu_dilindungi.R
 import com.example.perlu_dilindungi.models.ProvinceModel
 import com.example.perlu_dilindungi.request_controllers.CityController
 import com.example.perlu_dilindungi.request_controllers.FaskesController
@@ -25,9 +27,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
 
-class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class SearchFaskesFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var fusedLocationClient : FusedLocationProviderClient
-    private lateinit var faskesViewModel: FaskesViewModel
+//    private lateinit var faskesViewModel: FaskesViewModel
     private var initProvSpinner = true
     private var initCitySpinner = true
     private var permissionGranted = false
@@ -35,12 +37,16 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     private var longitude: Double? = null
     private var latitude: Double? = null
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_faskes)
+    private val faskesViewModel: FaskesViewModel by activityViewModels()
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val rootView : View = inflater.inflate(R.layout.fragment_search_faskes, container, false)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -76,9 +82,9 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             )
         )
 
-        faskesViewModel = ViewModelProvider(this)[FaskesViewModel::class.java]
+//        faskesViewModel = ViewModelProvider(this)[FaskesViewModel::class.java]
 
-        val searchButton: Button = findViewById(R.id.searchButton)
+        val searchButton: Button = rootView.findViewById(R.id.searchButton)
         searchButton.setOnClickListener {
             if (faskesViewModel.provinceSelected.value != null && faskesViewModel.citySelected.value != null) {
                 if (!permissionGranted) {
@@ -93,7 +99,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                 }
 
                 if (latitude == null || longitude == null){
-                    Toast.makeText(this, "Location unknown", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "Location unknown", Toast.LENGTH_LONG).show()
                     getLocation()
                     return@setOnClickListener
                 }
@@ -107,7 +113,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             }
         }
 
-        faskesViewModel.provinceSelected.observe(this, Observer {
+        faskesViewModel.provinceSelected.observe(requireActivity(), Observer {
             if (it != null) {
                 val prov: ProvinceModel? = faskesViewModel.provinces.value?.get(it)
                 if (prov != null) {
@@ -118,8 +124,17 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             }
         })
 
-        faskesViewModel.citiesFetching.observe(this, Observer {
-            val spinnerLoadingText: TextView = findViewById(R.id.citySpinnerLoadingText)
+        faskesViewModel.citiesFetching.observe(requireActivity(), Observer {
+            val spinnerLoadingText: TextView? = view?.findViewById(R.id.citySpinnerLoadingText)
+            if (it) {
+                spinnerLoadingText?.text = "Loading..."
+            } else {
+                spinnerLoadingText?.text = ""
+            }
+        })
+
+        faskesViewModel.provincesFetching.observe(requireActivity(), Observer {
+            val spinnerLoadingText: TextView = rootView.findViewById(R.id.provinceSpinnerLoadingText)
             if (it) {
                 spinnerLoadingText.text = "Loading..."
             } else {
@@ -127,38 +142,31 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             }
         })
 
-        faskesViewModel.provincesFetching.observe(this, Observer {
-            val spinnerLoadingText: TextView = findViewById(R.id.provinceSpinnerLoadingText)
-            if (it) {
-                spinnerLoadingText.text = "Loading..."
-            } else {
-                spinnerLoadingText.text = ""
-            }
-        })
-
-        faskesViewModel.provinces.observe(this, Observer {
-            val provinceSpinner: Spinner = findViewById(R.id.province_spinner)
-            val array: ArrayList<String> = ArrayList();
-            if (it != null) {
-                array.add("Pilih Provinsi")
-                for (prov in it) {
-                    array.add(prov.value!!)
+        activity?.let {
+            faskesViewModel.provinces.observe(it, Observer {
+                val provinceSpinner: Spinner = rootView.findViewById(R.id.province_spinner)
+                val array: ArrayList<String> = ArrayList();
+                if (it != null) {
+                    array.add("Pilih Provinsi")
+                    for (prov in it) {
+                        array.add(prov.value!!)
+                    }
+                } else {
+                    Log.i("ViewModel:Provinces", "Null value")
                 }
-            } else {
-                Log.i("ViewModel:Provinces", "Null value")
-            }
 
-            val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_spinner_item,
-                array.toTypedArray()
-            )
-            adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-            provinceSpinner.adapter = adapterTemp
-        })
+                val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
+                    requireActivity(),
+                    android.R.layout.simple_spinner_item,
+                    array.toTypedArray()
+                )
+                adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+                provinceSpinner.adapter = adapterTemp
+            })
+        }
 
-        faskesViewModel.cities.observe(this, Observer {
-            val citySpinner: Spinner = findViewById(R.id.city_spinner)
+        faskesViewModel.cities.observe(requireActivity(), Observer {
+            val citySpinner: Spinner = rootView.findViewById(R.id.city_spinner)
             val array: ArrayList<String> = ArrayList();
             if (it != null) {
                 array.add("Pilih Kota")
@@ -170,7 +178,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             }
 
             val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
-                this,
+                requireActivity(),
                 android.R.layout.simple_spinner_item,
                 array.toTypedArray()
             )
@@ -178,7 +186,7 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             citySpinner.adapter = adapterTemp
         })
 
-        faskesViewModel.faskesesFetching.observe(this, Observer {
+        faskesViewModel.faskesesFetching.observe(requireActivity(), Observer {
             if (it) {
                 searchButton.text = "Please Wait..."
             } else {
@@ -186,16 +194,18 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             }
         })
 
-        faskesViewModel.faskeses.observe(this, Observer {
+        faskesViewModel.faskeses.observe(requireActivity(), Observer {
         })
 
 
-        setOrientation()
-        setupProvinceSpinner()
-        setupCitySpinner()
+        setOrientation(rootView)
+        setupProvinceSpinner(rootView)
+        setupCitySpinner(rootView)
 
-        supportFragmentManager.beginTransaction()
+        parentFragmentManager.beginTransaction()
             .replace(R.id.faskesListFragmentReplace, FaskesListFragment()).commit()
+
+        return rootView
     }
 
     @SuppressLint("MissingPermission")
@@ -208,25 +218,25 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         }
     }
 
-    private fun setupCitySpinner() {
-        val citySpinner: Spinner = findViewById(R.id.city_spinner)
+    private fun setupCitySpinner(rootView: View) {
+        val citySpinner: Spinner = rootView.findViewById(R.id.city_spinner)
 
         val testArray: Array<String> = arrayOf()
 
         val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, testArray)
+            ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, testArray)
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
 
         citySpinner.adapter = adapter
         citySpinner.onItemSelectedListener = this
     }
 
-    private fun setupProvinceSpinner() {
-        val provinceSpinner: Spinner = findViewById(R.id.province_spinner)
+    private fun setupProvinceSpinner(rootView: View) {
+        val provinceSpinner: Spinner = rootView.findViewById(R.id.province_spinner)
 
         val testArray: Array<String> = arrayOf()
         val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, testArray)
+            ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, testArray)
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
 
         provinceSpinner.adapter = adapter
@@ -267,9 +277,9 @@ class SearchFaskesActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         Log.i("Spinner", "Nothing Selected")
     }
 
-    private fun setOrientation() {
-        val ml: LinearLayout = findViewById(R.id.mainLayout)
-        val divider: View = findViewById(R.id.mainLayoutDivider)
+    private fun setOrientation(rootView: View) {
+        val ml: LinearLayout = rootView.findViewById(R.id.mainLayout)
+        val divider: View = rootView.findViewById(R.id.mainLayoutDivider)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ml.orientation = LinearLayout.HORIZONTAL

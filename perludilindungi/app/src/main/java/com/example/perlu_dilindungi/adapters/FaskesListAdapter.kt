@@ -36,6 +36,9 @@ class FaskesListAdapter(private val context: Activity, private val arrayList: Ar
             if (faskes.jenis_faskes == "RUMAH SAKIT"){
                 faskesType.setBackgroundColor(Color.parseColor("#5D5FEF"))
             }
+            if (faskes.jenis_faskes == "KLINIK"){
+                faskesType.setBackgroundColor(Color.parseColor("#7879F1"))
+            }
         }
         else{
             faskesType.visibility = View.INVISIBLE

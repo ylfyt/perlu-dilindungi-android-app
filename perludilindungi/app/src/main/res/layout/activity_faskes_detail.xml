@@ -4,17 +4,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FaskesDetailActivity">
+    tools:context=".FaskesDetailActivity"
+    android:paddingHorizontal="10dp"
+    >
 
     <TextView
-        android:id="@+id/faskesIdTextView"
+        android:id="@+id/detail_FaskesNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Loading..."
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/detail_TypeGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/detail_FaskesNameText"
+        android:layout_marginTop="20dp"
+        >
+
+        <TextView
+            android:id="@+id/detail_FaskesKodeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/detail_FaskesType"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="#EF5DA8"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="Loading..."
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/detail_FaskesAddressText"
+        app:layout_constraintTop_toBottomOf="@id/detail_TypeGroup"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Loading..."
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:focusable="false"
+        android:textSize="12sp"
+        android:paddingTop="0dp"
+        android:paddingHorizontal="0dp"
+        android:background="@null"
+        />
+
+    <TextView
+        android:id="@+id/detail_FaskesNumberText"
+        app:layout_constraintTop_toBottomOf="@id/detail_FaskesAddressText"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        />
+
+    <ImageView
+        android:id="@+id/detail_FaskeStatusLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FaskesId"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/siap_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_FaskesNumberText"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Faskes Siap" />
+
+    <TextView
+        android:id="@+id/detail_FasilitasIniText"
+        app:layout_constraintTop_toBottomOf="@id/detail_FaskeStatusLogo"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fasilistas ini"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        />
+    <TextView
+        android:id="@+id/detail_FaskesStatusText"
+        app:layout_constraintTop_toBottomOf="@id/detail_FasilitasIniText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/detail_GoogleMapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Google Maps"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_FaskesStatusText"
+        android:layout_marginTop="20dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/google_maps_button"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/detail_BookmarkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bookmark_text"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_GoogleMapButton"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bookmark_button"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
