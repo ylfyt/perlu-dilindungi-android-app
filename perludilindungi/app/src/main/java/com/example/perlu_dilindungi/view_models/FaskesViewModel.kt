@@ -3,6 +3,7 @@ package com.example.perlu_dilindungi.view_models
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.perlu_dilindungi.CityModel
+import com.example.perlu_dilindungi.models.BookmarkModel
 import com.example.perlu_dilindungi.models.ProvinceModel
 import com.example.perlu_dilindungi.models.FaskesModel
 
@@ -37,9 +38,5 @@ class FaskesViewModel : ViewModel() {
 
     val faskeses : MutableLiveData<ArrayList<FaskesModel>?> by lazy {
         MutableLiveData<ArrayList<FaskesModel>?>()
-    }
-
-    val faskes : MutableLiveData<FaskesModel?> by lazy {
-        MutableLiveData<FaskesModel?>()
     }
 }

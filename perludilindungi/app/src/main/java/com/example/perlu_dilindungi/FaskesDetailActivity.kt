@@ -11,23 +11,22 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.example.perlu_dilindungi.database_handlers.DatabaseHandler
 import com.example.perlu_dilindungi.models.BookmarkModel
 import com.example.perlu_dilindungi.models.FaskesModel
-import com.example.perlu_dilindungi.view_models.FaskesViewModel
+import com.example.perlu_dilindungi.services.BookmarkDB
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class FaskesDetailActivity : AppCompatActivity() {
 
-    private lateinit var faskesViewModel: FaskesViewModel
+    private val db by lazy { BookmarkDB(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_faskes_detail)
-
-        faskesViewModel = ViewModelProvider(this)[FaskesViewModel::class.java]
-        faskesViewModel.faskes.value = null
 
         val fs = FaskesModel()
         fs.id = intent.getIntExtra("id", 0)
@@ -42,10 +41,17 @@ class FaskesDetailActivity : AppCompatActivity() {
         fs.latitude = intent.getStringExtra("latitude")
         fs.longitude = intent.getStringExtra("longitude")
 
-        val db = DatabaseHandler(this)
-        val bookmark:BookmarkModel? = db.getFaskesBookmarkByFaskesId(fs.id)
+        CoroutineScope(Dispatchers.IO).launch {
+            val bookmarks: List<BookmarkModel> = db.bookmarkDao().getBookmark(fs.id)
 
-        setupDetail(fs, bookmark)
+            withContext(Dispatchers.Main){
+                if (bookmarks.isNotEmpty())
+                    setupDetail(fs, bookmarks[0])
+                else
+                    setupDetail(fs, null)
+            }
+        }
+
 
         val googleMapsButton: Button = findViewById(R.id.detail_GoogleMapButton)
         googleMapsButton.setOnClickListener {
@@ -60,15 +66,30 @@ class FaskesDetailActivity : AppCompatActivity() {
         val bookmarkButton: Button = findViewById(R.id.detail_BookmarkButton)
         bookmarkButton.setOnClickListener{
             if (bookmarkButton.text == resources.getString(R.string.bookmark_text)){
-                val result = db.insertFaskesBookmark(fs)
-                if (result){
-                    setUnbookmarkButton(true)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val result = db.bookmarkDao().addBookmark(
+                        BookmarkModel(
+                            faskesId = fs.id,
+                            province = fs.provinsi!!,
+                            city = fs.kota!!
+                        )
+                    )
+                    if (result.toInt() == fs.id){
+                        withContext(Dispatchers.Main){
+                            setUnbookmarkButton(true)
+                        }
+                    }
                 }
             }
             else{
-                val result = db.deleteFaskesBookmark(fs.id)
-                if (result){
-                    setUnbookmarkButton(false)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val result = db.bookmarkDao().deleteBookmark(fs.id)
+
+                    if (result == 1) {
+                        withContext(Dispatchers.Main) {
+                            setUnbookmarkButton(false)
+                        }
+                    }
                 }
             }
         }
