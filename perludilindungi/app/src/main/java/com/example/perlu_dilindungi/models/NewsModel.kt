@@ -13,11 +13,7 @@ class NewsModel {
     var guid: String? = null
     var pubdate: String? = null
     var cdata: String? = null
-    var enclosure: NewsEnclosure? = null
-}
-
-class NewsEnclosure {
-    var url: String? = null
-    var length: String? = null
-    var type: String? = null
+    var enclURL: String? = null
+    var enclLength: String? = null
+    var enclType: String? = null
 }
