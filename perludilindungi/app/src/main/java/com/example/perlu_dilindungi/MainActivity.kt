@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
+import com.example.perlu_dilindungi.fragments.BookMarkFaskesFragment
 import com.example.perlu_dilindungi.fragments.NewsFragment
 import com.example.perlu_dilindungi.fragments.SearchFaskesFragment
 import com.google.android.material.navigation.NavigationBarView
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private val searchFaskesFragment : Fragment = SearchFaskesFragment()
     private val newsFragment : Fragment = NewsFragment()
+    private val FaskesBookmark : Fragment = BookMarkFaskesFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             }
             if (it.itemId == R.id.nav_bookmark){
                 Log.i("Navbar", "Bookmark")
+                replaceFragment(FaskesBookmark)
             }
 
             true
