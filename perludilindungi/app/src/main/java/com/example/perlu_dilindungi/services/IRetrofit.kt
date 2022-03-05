@@ -3,11 +3,14 @@ package com.example.perlu_dilindungi.services
 import com.example.perlu_dilindungi.ListOfCity
 import com.example.perlu_dilindungi.models.ListOfProvince
 import com.example.perlu_dilindungi.models.FaskesResponseModel
+import com.example.perlu_dilindungi.models.NewsResponseModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface IRetrofit {
+    @GET("get-news")
+    fun getNews(): Call<NewsResponseModel>?
 
     @GET("get-province")
     fun getProvincies(): Call<ListOfProvince?>?
@@ -19,6 +22,7 @@ interface IRetrofit {
     fun getFaskeses(@Query("province") province: String, @Query("city") city: String) : Call<FaskesResponseModel>?
 
     companion object{
+        const val BASE_URL_NEWS = "https://perludilindungi.herokuapp.com/api/"
         const val BASE_URL_DAERAH = "https://perludilindungi.herokuapp.com/api/"
         const val BASE_URL_FASKES = "https://perludilindungi.herokuapp.com/api/"
     }
