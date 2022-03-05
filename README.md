@@ -23,24 +23,33 @@ Aplikasi bernama Perlu Dilindungi. Berikut fitur-fitur yang ada pada aplikasi in
 
 ## Library yang digunakan dan justifikasi penggunaannya
 
+**Untuk mengirimkan request ke server**  
 implementation 'com.squareup.retrofit2:retrofit:2.3.0'
 implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
+**Untuk mengakses lokasi pengguna**  
 implementation 'com.google.android.gms:play-services-location:19.0.1'
 
-implementation 'androidx.fragment:fragment-ktx:1.4.1'
+**Untuk menggunakan fragment**  
+implementation 'androidx.fragment:fragment-ktx:1.4.1'  
 implementation 'com.android.support:multidex:1.0.3'
 
-_ViewModel_  
+**Untuk menggunakan ViewModel**  
 implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
-_LiveData_  
-implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'  
-_Room_  
-implementation "androidx.room:room-runtime:2.4.2"
-kapt "androidx.room:room-compiler:2.4.2"  
-_Coroutines_  
-implementation "androidx.room:room-ktx:2.4.2"
+
+**Untuk menggunakan LiveData di ViewModel**  
+implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+
+**Untuk mengakses database sqlite dan sebagai ORM**  
+implementation "androidx.room:room-runtime:2.4.2"  
+kapt "androidx.room:room-compiler:2.4.2"
+
+**Untuk menjalankan program secara async untuk database**  
+implementation "androidx.room:room-ktx:2.4.2"  
 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
+
+**Untuk menampilkan image pada ImageView**  
+implementation "com.squareup.picasso:picasso:2.71828"
 
 ## Screenshot aplikasi (dimasukkan dalam folder screenshot).
 
