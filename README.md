@@ -44,7 +44,7 @@ __Untuk menjalankan program secara async untuk database__
 implementation "androidx.room:room-ktx:2.4.2"  
 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
 
-__Untuk menampilkan image pada ImageView__
+__Untuk menampilkan image pada ImageView__  
 implementation "com.squareup.picasso:picasso:2.71828"
 ## Screenshot aplikasi (dimasukkan dalam folder screenshot).
 
