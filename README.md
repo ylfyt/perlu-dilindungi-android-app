@@ -21,6 +21,15 @@ Aplikasi bernama Perlu Dilindungi. Berikut fitur-fitur yang ada pada aplikasi in
 1. Search Faskes  
    Ketika pengguna membuka halaman ini, aplikasi akan langsung merequest list provinsi dari API, setelah itu pengguna dapat memilih provinsinya. Ketika pengguna sudah memilih provinsi, server akan me-request kota.
 
+2. Bookmark Faskes
+   Setelah pengguna mengeklik tanda + pada detail faskes. Data faskes yang di-bookmark akan dikirim ke database. Halaman bookmark akan mengambil/fetch data tersebut
+
+3. List Berita
+   Aplikasi akan mengirim request ke API dan dari API akan didapatkan list berita yang ditampilkan RecycleView
+
+4. Berita
+   Dari List Berita, jika pengguna mengeklik berita makan akan ditampikan konten dari berita tersebut.
+
 ## Library yang digunakan dan justifikasi penggunaannya
 
 **Untuk mengirimkan request ke server**  
@@ -50,6 +59,9 @@ implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
 
 **Untuk menampilkan image pada ImageView**  
 implementation "com.squareup.picasso:picasso:2.71828"
+
+**Untuk QRCode**
+implementation 'com.budiyev.android:code-scanner:2.1.0'
 
 ## Screenshot aplikasi (dimasukkan dalam folder screenshot).
 
