@@ -33,7 +33,7 @@ class NewsListAdapter (private val context: Activity, private val datas: ArrayLi
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news: NewsModel = datas[position]
-        Picasso.get().load(news.enclosure?._url).into(holder.newsImageView)
+        Picasso.get().load(news.enclosure?._url).resize(93,64).centerCrop().into(holder.newsImageView)
         holder.newsNameView.setText(news.title)
         holder.newsDateView.setText(news.pubDate)
 
