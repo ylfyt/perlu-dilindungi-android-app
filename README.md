@@ -20,8 +20,8 @@ Pengguna dapat menggunakan halaman QR Code Scanner bawaan aplikasi untuk melakuk
 
 ## Library yang digunakan dan justifikasi penggunaannya  
 implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+implementation 'com.squareup.picasso:picasso:2.71828'
 implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-
 implementation 'com.google.android.gms:play-services-location:19.0.1'
 
 implementation 'androidx.fragment:fragment-ktx:1.4.1'
