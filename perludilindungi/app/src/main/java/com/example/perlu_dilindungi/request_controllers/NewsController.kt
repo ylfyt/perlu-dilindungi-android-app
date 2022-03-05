@@ -1,6 +1,6 @@
 package com.example.perlu_dilindungi.request_controllers
 
-import com.example.perlu_dilindungi.models.NewsModel
+import android.util.Log
 import com.example.perlu_dilindungi.models.NewsResponseModel
 import com.example.perlu_dilindungi.services.IRetrofit
 import com.example.perlu_dilindungi.view_models.NewsViewModel
@@ -40,6 +40,4 @@ class NewsController(newsViewModel: NewsViewModel) : Callback<NewsResponseModel?
         viewModel.newsFetching.value = false
         TODO("Not yet implemented")
     }
-
-
 }

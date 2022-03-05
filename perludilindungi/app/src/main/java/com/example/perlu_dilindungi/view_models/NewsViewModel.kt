@@ -1,9 +1,10 @@
 package com.example.perlu_dilindungi.view_models
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.perlu_dilindungi.models.NewsModel
 
-class NewsViewModel {
+class NewsViewModel : ViewModel() {
     val newsFetching: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }

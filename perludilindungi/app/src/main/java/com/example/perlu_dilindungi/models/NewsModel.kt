@@ -11,9 +11,17 @@ class NewsModel {
     var title: String? = null
     var link: ArrayList<String>? = null
     var guid: String? = null
-    var pubdate: String? = null
-    var cdata: String? = null
-    var enclURL: String? = null
-    var enclLength: String? = null
-    var enclType: String? = null
+    var pubDate: String? = null
+    var description: NewsDescription? = null
+    var enclosure: NewsEnclosure? = null
+}
+
+class NewsDescription {
+    var __cdata: String? = null
+}
+
+class NewsEnclosure {
+    var _url: String? = null
+    var _length: String? = null
+    var _type: String? = null
 }
