@@ -19,23 +19,29 @@ Pengguna dapat menggunakan halaman QR Code Scanner bawaan aplikasi untuk melakuk
 
 
 ## Library yang digunakan dan justifikasi penggunaannya  
+__Untuk mengirimkan request ke server__  
 implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-implementation 'com.squareup.picasso:picasso:2.71828'
 implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+__Untuk mengakses lokasi pengguna__  
 implementation 'com.google.android.gms:play-services-location:19.0.1'
 
-implementation 'androidx.fragment:fragment-ktx:1.4.1'
+__Untuk menggunakan fragment__  
+implementation 'androidx.fragment:fragment-ktx:1.4.1'  
 implementation 'com.android.support:multidex:1.0.3'
 
-_ViewModel_  
+__Untuk menggunakan ViewModel__  
 implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
-_LiveData_  
+
+__Untuk menggunakan LiveData di ViewModel__  
 implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'  
-_Room_  
-implementation "androidx.room:room-runtime:2.4.2"
+
+__Untuk mengakses database sqlite dan sebagai ORM__  
+implementation "androidx.room:room-runtime:2.4.2"  
 kapt "androidx.room:room-compiler:2.4.2"  
-_Coroutines_  
-implementation "androidx.room:room-ktx:2.4.2"
+
+__Untuk menjalankan program secara async untuk database__  
+implementation "androidx.room:room-ktx:2.4.2"  
 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
 
 ## Screenshot aplikasi (dimasukkan dalam folder screenshot).

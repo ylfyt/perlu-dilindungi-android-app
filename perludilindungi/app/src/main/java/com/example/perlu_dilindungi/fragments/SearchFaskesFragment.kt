@@ -154,14 +154,16 @@ class SearchFaskesFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 } else {
                     Log.i("ViewModel:Provinces", "Null value")
                 }
+                if (activity != null){
+                    val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
+                        requireActivity(),
+                        android.R.layout.simple_spinner_item,
+                        array.toTypedArray()
+                    )
+                    adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+                    provinceSpinner.adapter = adapterTemp
+                }
 
-                val adapterTemp: ArrayAdapter<String> = ArrayAdapter<String>(
-                    requireActivity(),
-                    android.R.layout.simple_spinner_item,
-                    array.toTypedArray()
-                )
-                adapterTemp.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-                provinceSpinner.adapter = adapterTemp
             })
         }
 
@@ -297,5 +299,10 @@ class SearchFaskesFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 bottomToBottom = R.id.leftMainLayout
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        faskesViewModel.faskeses.value = null
     }
 }
